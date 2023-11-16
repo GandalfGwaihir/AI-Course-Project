@@ -243,8 +243,7 @@ let clearBtn = document.getElementById("clearBtn");
 export function clearGrid() {
   let node = new Node();
   nodesToAnimate = [];
-  resetTimer();
-  countLength(0, "reset");
+  
   for (let r = 0; r < totalRows; r++) {
     for (let c = 0; c < totalCols; c++) {
       node = gridArray[r][c];
@@ -285,8 +284,7 @@ let clearPathBtn = document.getElementById("clearPathBtn");
 
 export function clearPath() {
   let node = new Node();
-  resetTimer();
-  countLength(0, "reset");
+
   nodesToAnimate = [];
   for (let r = 0; r < totalRows; r++) {
     for (let c = 0; c < totalCols; c++) {
@@ -339,6 +337,7 @@ algoID.addEventListener("click", (e) => {
   const validID = ["aStar", "greedyBFS", "dijkstra", "BFS"];
   let target_id = e.target.id;
   if (validID.includes(target_id)) {
+    e.preventDefault();
     updateStartBtn(target_id);
   }
   e.preventDefault();
