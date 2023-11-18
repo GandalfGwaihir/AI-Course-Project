@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>
+    #result {
+        margin-top: 20px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
   <!-- Required meta tags -->
   <meta charset="utf-8" />
   <meta 
     name="description" 
     content="PathFinding visualization project, 'Mangalyaan', that visualizes 4 shortest path algorithms, A*, Best-First Search, Dijkstra and Breadth-First Search">
-  <meta 
-    name="authors" 
-    content="Anusha Bansal and Soumya Sharma">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -94,10 +111,10 @@
                 ></span> invisible highlight.</li>
               <li>Drag the <span class="color-code start">. . .</span> Start node to set the start position</li>
               <li>Drag the <span class="color-code end">. . .</span> End node to set the end position</li>
-              <li>Click and press the 'W' key on your keyboard and drag your mouse to add <span
+              <!-- <li>Click and press the 'W' key on your keyboard and drag your mouse to add <span
                   class="color-code unvisited-weight"
                 >. . .</span> Weights for weighted algorithms.
-              </li>
+              </li> -->
               <li>Choose an algorithm from the right hand side bar.</li>
               <li>Click Start button in the lower right corner of the side bar to start the visualization.</li>
               <li>The <span class="color-code visited">. . .</span> Visted nodes will be highlighted along the <span
@@ -105,6 +122,11 @@
                 >. . .</span> Shortest path.</li>
             </ul>
           </div>
+          <!-- Show Results Button -->
+<button onclick="showResults()">Show Results</button>
+
+<!-- Display Results -->
+<div id="result"></div>
         </div>
       </div>
     </div>
@@ -319,6 +341,68 @@
       </div>
     </div>
   </div>
+  <script>
+    function showResults() {
+        // A* (aStar)
+        var aStarCount = getDistance("aStarCount");
+        var aStarTimer = getTime("aStarTimer");
+    
+        // Greedy Best-First Search (greedyBFS)
+        var greedyBFSCount = getDistance("greedyBFSCount");
+        var greedyBFSTimer = getTime("greedyBFSTimer");
+    
+        // Dijkstra's Algorithm (dijkstra)
+        var dijkstraCount = getDistance("dijkstraCount");
+        var dijkstraTimer = getTime("dijkstraTimer");
+    
+        // Breadth-First Search (BFS)
+        var BFSCount = getDistance("BFSCount");
+        var BFSTimer = getTime("BFSTimer");
+    
+        // Compare and display the results
+        var result = compareResults(
+            { name: "A*", distance: aStarCount, time: aStarTimer },
+            { name: "Greedy BFS", distance: greedyBFSCount, time: greedyBFSTimer },
+            { name: "Dijkstra", distance: dijkstraCount, time: dijkstraTimer },
+            { name: "BFS", distance: BFSCount, time: BFSTimer }
+        );
+    
+        // Update the result element on the page
+        document.getElementById("result").innerHTML = "Algorithm with the shortest distance: " + result.shortestDistance.name +
+                                                          "<br>Algorithm with the shortest time: " + result.shortestTime.name;
+    }
+    
+    function getDistance(elementId) {
+        var distanceText = document.getElementById(elementId).innerHTML;
+        return parseInt(distanceText.match(/\d+/)[0]); // Extract numeric value
+    }
+    
+    function getTime(elementId) {
+        var timeText = document.getElementById(elementId).innerHTML;
+        return timeText.trim();
+    }
+    
+    function compareResults(...algorithms) {
+        algorithms.sort((a, b) => {
+            if (a.distance !== b.distance) {
+                return a.distance - b.distance;
+            } else {
+                // If distances are tied, compare by time
+                return convertTimeToMilliseconds(a.time) - convertTimeToMilliseconds(b.time);
+            }
+        });
+    
+        return {
+            shortestDistance: algorithms[0],
+            shortestTime: algorithms[algorithms.length - 1] // Last element in the sorted array
+        };
+    }
+    
+    function convertTimeToMilliseconds(time) {
+        var parts = time.match(/(\d+) min (\d+) sec (\d+) ms/);
+        return (parseInt(parts[1]) * 60 * 1000) + (parseInt(parts[2]) * 1000) + parseInt(parts[3]);
+    }
+    </script>
   <!-- [End] Algorithm Side-bar -->
 
   <!-- GitHub info -->

@@ -243,7 +243,8 @@ let clearBtn = document.getElementById("clearBtn");
 export function clearGrid() {
   let node = new Node();
   nodesToAnimate = [];
-  
+  resetTimer();
+  countLength(0, "reset");
   for (let r = 0; r < totalRows; r++) {
     for (let c = 0; c < totalCols; c++) {
       node = gridArray[r][c];
